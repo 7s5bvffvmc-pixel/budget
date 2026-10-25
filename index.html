@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Budget mensuel</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F4F7;--card:#fff;--ink:#141B2D;--soft:#667085;--line:#E4E7EC;--field:#F7F8FA;--good:#1E8E5A;--bad:#C8382F;--btn:#141B2D;--btnt:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D121E;--card:#161D2E;--ink:#EEF1F7;--soft:#98A2B3;--line:#27304A;--field:#0F1524;--good:#4CC38A;--bad:#F2796F;--btn:#EEF1F7;--btnt:#141B2D}}
+:root[data-theme="dark"]{--bg:#0D121E;--card:#161D2E;--ink:#EEF1F7;--soft:#98A2B3;--line:#27304A;--field:#0F1524;--good:#4CC38A;--bad:#F2796F;--btn:#EEF1F7;--btnt:#141B2D}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope','Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.45;font-variant-numeric:tabular-nums}
+main{max-width:1080px;margin:0 auto;padding:24px 16px 56px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+h1{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin:0}
+.nav{display:flex;align-items:center;gap:4px}
+.nav button,.tbtn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:1.1rem}
+.tbtn.tx{width:auto;padding:0 12px;font-size:.85rem;font-weight:600}
+body.boot main{visibility:hidden}
+.lnk{font:inherit;font-size:.78rem;border:0;background:none;color:var(--soft);text-decoration:underline;cursor:pointer;padding:0;margin-left:8px}
+#login{position:fixed;inset:0;z-index:10;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px}
+#login .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;max-width:360px;width:100%}
+#login h2{margin:0 0 6px;font-size:1.3rem}#login p{color:var(--soft);margin:0 0 16px}
+#login input{width:100%;font:inherit;font-size:1.3rem;letter-spacing:.3em;text-align:center;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--field);color:var(--ink);margin-bottom:12px}
+#login button{width:100%;font:inherit;font-weight:700;border:0;border-radius:10px;padding:12px;background:var(--btn);color:var(--btnt);cursor:pointer}
+.sync{font-size:.78rem;color:var(--soft);margin-top:2px}
+.nav b{min-width:150px;text-align:center;text-transform:capitalize;font-weight:700}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+@media(min-width:820px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.tile span{display:block;color:var(--soft);font-size:.85rem;font-weight:500}
+.tile b{display:block;font-size:1.55rem;font-weight:800;letter-spacing:-.02em;margin-top:2px}
+.tile input{font:inherit;font-size:1.55rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);background:none;border:0;border-bottom:2px solid var(--line);width:100%;padding:0;margin-top:2px;border-radius:0}
+.main{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:900px){.main{grid-template-columns:1.6fr 1fr;align-items:start}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.card h2{font-size:1rem;font-weight:700;margin:0 0 12px}
+.head,.r{display:grid;grid-template-columns:1fr 150px 120px 30px 26px;gap:10px;align-items:center}
+.head{color:var(--soft);font-size:.8rem;font-weight:600;padding:0 0 8px 12px;border-bottom:1px solid var(--line)}
+.head span:nth-child(3){text-align:right}
+.r{padding:7px 0 7px 12px;border-bottom:1px solid var(--line);position:relative}
+.r::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:4px;border-radius:4px;background:var(--c)}
+input,select{font:inherit;color:var(--ink);min-width:0}
+.r .l{background:none;border:0;font-weight:600;padding:6px 0;width:100%}
+.r select{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:6px 8px;width:100%}
+.amt{display:flex;align-items:center;gap:4px;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:0 10px}
+.amt input{border:0;background:none;width:100%;text-align:right;padding:6px 0;font-weight:600}
+.amt span{color:var(--soft)}
+.r.paid .l,.r.paid .a{color:var(--soft);text-decoration:line-through}
+.r input[type=checkbox]{width:20px;height:20px;accent-color:var(--good);cursor:pointer}
+.del{border:0;background:none;color:var(--soft);cursor:pointer;font-size:1rem;border-radius:6px}
+.del:hover{color:var(--bad)}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid #3B82F6;outline-offset:2px}
+.add{font:inherit;font-weight:700;margin-top:14px;background:var(--btn);color:var(--btnt);border:0;border-radius:10px;padding:10px 16px;cursor:pointer}
+.chart{display:flex;flex-direction:column;align-items:center;gap:16px}
+.ring{position:relative;width:220px;height:220px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:26}
+.ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ctr b{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}.ctr span{color:var(--soft);font-size:.82rem}
+.legend{list-style:none;margin:0;padding:0;width:100%}
+.legend li{display:grid;grid-template-columns:14px 1fr auto 44px;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
+.legend i{width:10px;height:10px;border-radius:3px}
+.legend em{font-style:normal;color:var(--soft);text-align:right}
+.empty{color:var(--soft);padding:30px 0;text-align:center}
+@media(max-width:640px){
+.head{display:none}
+.r{grid-template-columns:1fr 1fr 30px 26px;grid-template-areas:"l l l l" "c a p d"}
+.r .l{grid-area:l}.r select{grid-area:c}.r .amt{grid-area:a}.r .p{grid-area:p}.r .del{grid-area:d}}
+</style>
+</head>
+<body class="boot">
+<div id="login"><div class="box"><h2>Code d’accès</h2><p>Entre ton code pour ouvrir ton budget.</p><input id="code" type="password" inputmode="numeric" maxlength="6" pattern="[0-9]*" autocomplete="current-password" aria-label="Code d’accès"><button id="send">Entrer</button><p id="lmsg" style="margin:12px 0 0;text-align:center"></p></div></div>
+<main>
+<div class="top"><div><h1>Budget mensuel</h1><div class="sync"><span id="sync">Enregistré sur cet appareil</span><button class="lnk" id="logout" hidden>Verrouiller</button></div></div>
+<div style="display:flex;gap:8px;align-items:center"><div class="nav"><button id="prev" aria-label="Mois précédent">‹</button><b id="mlabel"></b><button id="next" aria-label="Mois suivant">›</button></div><button class="tbtn tx" id="save" title="Télécharge un fichier de sauvegarde de tes données">Sauvegarde</button><button class="tbtn tx" id="load" title="Recharge un fichier de sauvegarde">Restaurer</button><input type="file" id="file" accept=".json,application/json" hidden><button class="tbtn" id="theme" aria-label="Changer de thème">☾</button></div></div>
+<div class="tiles">
+<div class="tile"><span>Revenus du mois</span><input id="inc" type="number" min="0" inputmode="decimal" placeholder="0 €" aria-label="Revenus du mois"></div>
+<div class="tile"><span>Dépenses prévues</span><b id="tot"></b></div>
+<div class="tile"><span>Reste à vivre</span><b id="rest"></b></div>
+<div class="tile"><span>Reste à payer</span><b id="topay"></b></div>
+</div>
+<div class="main">
+<section class="card"><h2>Mes dépenses du mois</h2>
+<div class="head"><span>Dépense</span><span>Catégorie</span><span>Montant</span><span>Payé</span><span></span></div>
+<div id="rows"></div>
+<button class="add" id="add">+ Ajouter une dépense</button></section>
+<section class="card"><h2>Répartition</h2><div class="chart" id="chart"></div></section>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+// ====== À REMPLIR (voir les étapes) ======
+const CONFIG={email:"moi@exemple.com",url:"https://tirktpyxuaxkcxhzkcgz.supabase.co",key:"sb_publishable_-N8vMOE3854AjQ9_dw4F_A_2hWXBVbZ"};
+// =========================================
+const CATS=[["Logement","#2F6DB5"],["Factures","#1FA39A"],["Alimentation","#E3A02F"],["Transport","#7B6FD6"],["Abonnements","#D9577A"],["Santé","#4EAE72"],["Loisirs","#E5794A"],["Autre","#8793A6"]];
+const START=[["Loyer",0,750],["Électricité",1,60],["Internet",1,30],["Téléphone",1,15],["Assurance",1,45],["Courses",2,300],["Transport",3,70],["Abonnements",4,25]];
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString('fr-FR',{style:'currency',currency:'EUR',minimumFractionDigits:Math.abs(n%1)>.004?2:0,maximumFractionDigits:2});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+let S={m:{}};
+try{const r=JSON.parse(localStorage.getItem('budget-mensuel')||'null');if(r&&r.m)S=r}catch(e){}
+let cloud=null,timer=null;
+const save=()=>{try{localStorage.setItem('budget-mensuel',JSON.stringify(S))}catch(e){}
+if(!cloud)return;$('sync').textContent='Synchronisation…';clearTimeout(timer);
+timer=setTimeout(async()=>{try{await cloud.set(JSON.parse(JSON.stringify(S)));$('sync').textContent='☁ Synchronisé'}catch(e){$('sync').textContent='Erreur de synchronisation, réessaie'}},700)};
+let cur=new Date().toISOString().slice(0,7);
+const shift=(k,n)=>{const[y,m]=k.split('-').map(Number),d=new Date(y,m-1+n,1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')};
+function M(){if(!S.m[cur]){const p=Object.keys(S.m).filter(x=>x<cur).sort().pop();
+S.m[cur]=p?{inc:S.m[p].inc,rows:S.m[p].rows.map(r=>({...r,id:uid(),p:false}))}:{inc:0,rows:START.map(s=>({id:uid(),l:s[0],c:s[1],a:s[2],p:false}))}}return S.m[cur]}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+function build(){const m=M();
+$('mlabel').textContent=new Date(cur+'-01T12:00').toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+$('inc').value=m.inc||'';
+$('rows').innerHTML=m.rows.map(r=>`<div class="r${r.p?' paid':''}" data-id="${r.id}" style="--c:${CATS[r.c][1]}"><input class="l" value="${esc(r.l)}" placeholder="Nom de la dépense" aria-label="Nom"><select aria-label="Catégorie">${CATS.map((c,i)=>`<option value="${i}"${i===r.c?' selected':''}>${c[0]}</option>`).join('')}</select><label class="amt"><input class="a" type="number" min="0" step="0.01" inputmode="decimal" value="${r.a||''}" placeholder="0" aria-label="Montant"><span>€</span></label><input class="p" type="checkbox" aria-label="Payé"${r.p?' checked':''}><button class="del" aria-label="Supprimer">✕</button></div>`).join('');
+update()}
+function find(e){const el=e.target.closest('.r');return el&&{el,r:M().rows.find(x=>x.id===el.dataset.id)}}
+$('rows').oninput=e=>{const f=find(e);if(!f)return;if(e.target.classList.contains('l'))f.r.l=e.target.value;if(e.target.classList.contains('a'))f.r.a=Math.max(0,parseFloat(e.target.value)||0);save();update()};
+$('rows').onchange=e=>{const f=find(e);if(!f)return;if(e.target.tagName==='SELECT'){f.r.c=+e.target.value;f.el.style.setProperty('--c',CATS[f.r.c][1])}if(e.target.type==='checkbox'){f.r.p=e.target.checked;f.el.classList.toggle('paid',f.r.p)}save();update()};
+$('rows').onclick=e=>{if(!e.target.closest('.del'))return;const f=find(e);const m=M();m.rows=m.rows.filter(x=>x!==f.r);save();build()};
+$('add').onclick=()=>{M().rows.push({id:uid(),l:'',c:7,a:0,p:false});save();build();const ls=document.querySelectorAll('.r .l');ls[ls.length-1].focus()};
+$('inc').oninput=e=>{M().inc=Math.max(0,parseFloat(e.target.value)||0);save();update()};
+$('prev').onclick=()=>{cur=shift(cur,-1);build()};$('next').onclick=()=>{cur=shift(cur,1);build()};
+function update(){const m=M(),tot=m.rows.reduce((s,r)=>s+r.a,0),paid=m.rows.filter(r=>r.p).reduce((s,r)=>s+r.a,0),rest=m.inc-tot;
+$('tot').textContent=fmt(tot);$('topay').textContent=fmt(tot-paid);
+$('rest').textContent=m.inc?fmt(rest):'—';$('rest').style.color=m.inc?(rest<0?'var(--bad)':'var(--good)'):'var(--soft)';
+const by=CATS.map((c,i)=>({c,v:m.rows.filter(r=>r.c===i).reduce((s,r)=>s+r.a,0)})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v);
+if(!by.length){$('chart').innerHTML='<div class="empty">Ajoute des montants pour voir la répartition.</div>';return}
+const R=86,C=2*Math.PI*R;let off=0;
+const arcs=by.map(x=>{const l=x.v/tot*C,s=`<circle cx="110" cy="110" r="${R}" stroke="${x.c[1]}" stroke-dasharray="${Math.max(l-2,.1)} ${C}" stroke-dashoffset="${-off}"><title>${x.c[0]} : ${fmt(x.v)}</title></circle>`;off+=l;return s}).join('');
+$('chart').innerHTML=`<div class="ring"><svg viewBox="0 0 220 220" role="img" aria-label="Répartition des dépenses">${arcs}</svg><div class="ctr"><b>${fmt(tot)}</b><span>ce mois-ci</span></div></div><ul class="legend">${by.map(x=>`<li><i style="background:${x.c[1]}"></i><span>${x.c[0]}</span><b>${fmt(x.v)}</b><em>${Math.round(x.v/tot*100)} %</em></li>`).join('')}</ul>`}
+$('save').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='budget-sauvegarde-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('load').onclick=()=>$('file').click();
+$('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const d=JSON.parse(rd.result);if(!d||!d.m)throw 0;if(!confirm('Remplacer les données actuelles par cette sauvegarde ?'))return;S=d;save();build()}catch(x){alert('Ce fichier n’est pas une sauvegarde valide.')}};rd.readAsText(f);e.target.value=''};
+$('theme').onclick=()=>{const r=document.documentElement,d=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=d?'light':'dark';$('theme').textContent=d?'☾':'☀'};
+build();
+let sb=null,userId=null;
+const show=()=>document.body.classList.remove('boot');
+const lock=()=>{$('login').style.display='flex';setTimeout(()=>$('code').focus(),50)};
+async function start(session){
+if(userId===session.user.id)return;userId=session.user.id;$('login').style.display='none';
+const {data,error}=await sb.from('budgets').select('data').eq('user_id',userId).maybeSingle();
+if(error){$('sync').textContent='Erreur de connexion à la base';show();return}
+cloud={set:async d=>{const r=await sb.from('budgets').upsert({user_id:userId,data:d,updated_at:new Date().toISOString()});if(r.error)throw r.error}};
+$('logout').hidden=false;
+if(data&&data.data&&data.data.m){S=data.data;try{localStorage.setItem('budget-mensuel',JSON.stringify(S))}catch(e){}build();$('sync').textContent='☁ Synchronisé'}
+else{$('sync').textContent='Synchronisation…';try{await cloud.set(JSON.parse(JSON.stringify(S)));$('sync').textContent='☁ Synchronisé'}catch(e){$('sync').textContent='Erreur de synchronisation'}}
+show()}
+if(window.supabase&&CONFIG.url.startsWith('https://')){
+sb=supabase.createClient(CONFIG.url,CONFIG.key);
+sb.auth.onAuthStateChange((ev,session)=>{if(session)start(session);else{userId=null;cloud=null;$('logout').hidden=true;lock()}});
+const enter=async()=>{const code=$('code').value;if(!code){$('code').focus();return}
+$('lmsg').textContent='Vérification…';const {error}=await sb.auth.signInWithPassword({email:CONFIG.email,password:code});
+$('lmsg').textContent=error?'Code incorrect.':'';if(!error)$('code').value=''};
+$('send').onclick=enter;$('code').oninput=()=>{if($('code').value.length===6)enter()};$('code').onkeydown=e=>{if(e.key==='Enter')enter()};
+$('logout').onclick=()=>sb.auth.signOut()}
+else{$('sync').textContent='Mode local : base de données non configurée';show()}
+</script>
+</body>
+</html>
